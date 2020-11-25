@@ -1,0 +1,1 @@
+This JSON describes the official specification for the Open Data Request API.
