@@ -1,0 +1,626 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Data Subject Access Requests API",
+        "description": "This API describes a programattic way for applications to submit Data Subject Access Requests (ie. GDPR Data Requests) to an organisation. It is developed as part of the Aeon project, which attempts to increase the user experience of managing personal data for EU citizens.",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "email": "lei@codified.nl"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "0.1.0"
+    },
+    "externalDocs": {
+        "description": "Find out more about Aeon",
+        "url": "https://aeon.technology"
+    },
+    "components": {
+        "securitySchemes": {
+            "oAuth": {
+                "type": "oauth2",
+                "description": "This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)",
+                "flows": {
+                    "authorizationCode": {
+                        "authorizationUrl": "/oauth/authorized",
+                        "tokenUrl": "/oauth/token",
+                        "scopes": {}
+                    }
+                }
+            }
+        },
+        "responses": {
+            "unauthorized": {
+                "description": "Unauthorized",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Unauthorized"
+                                    ]
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "enum": [
+                                        "You are not authorized. Generate authentication tokens via OAuth to access this resource."
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "notfound": {
+                "description": "Not Found",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Not Found"
+                                    ]
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Could not find a data request with this id."
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "requestId": {
+                "in": "path",
+                "name": "requestId",
+                "schema": {
+                    "type": "string"
+                },
+                "required": true,
+                "description": "A random identifier that uniquely identifies a request. A version 4 UUID is strongly recommended. Note: the generated identifier must be random. The identifier must not include any information that can be related to the requester. Additionally, requestIds must not be incremental."
+            }
+        },
+        "schemas": {
+            "request": {
+                "type": "object",
+                "required": [
+                    "requestId",
+                    "createdAt",
+                    "isCompleted",
+                    "dataRequested"
+                ],
+                "properties": {
+                    "requestId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "A random identifier that uniquely identifies a request. A version 4 UUID is strongly recommended. Note: the generated identifier must be random. The identifier must not include any information that can be related to the requester. Additionally, requestIds must not be incremental."
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "A date-time detailing when the request was made"
+                    },
+                    "expectedCompletion": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "An optional date-time detailing when the request is expected to be completed"
+                    },
+                    "isCompleted": {
+                        "type": "boolean",
+                        "description": "Whether the request has been completed already"
+                    },
+                    "completedAt": {
+                        "type": "string",
+                        "format": "data",
+                        "description": "An optional date-time detailing when the request was completed."
+                    },
+                    "dataRequested": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "Identifier of a data type that was requested"
+                        }
+                    }
+                }
+            },
+            "dataType": {
+                "type": "string",
+                "example": "CommonDenominator"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Requests",
+            "description": "Endpoints for making and checking on requests"
+        },
+        {
+            "name": "Data",
+            "description": "Endpoints for checking on the data that is collected by an organisation"
+        },
+        {
+            "name": "Settings",
+            "description": "Endpoints for getting the implementation details for this organisation"
+        }
+    ],
+    "security": [
+        {
+            "oAuth": []
+        }
+    ],
+    "paths": {
+        "/requests": {
+            "get": {
+                "summary": "List all data requests for this user",
+                "description": "This will list all the active data requests for the currently authenticated user. In case any requests expire, they will no longer be present in this list.",
+                "tags": [
+                    "Requests"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/request"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new data request",
+                "description": "Used by the authenticated user to create a new data request from the organisation. The amount of data requests that can be simultaneously in progress is set by the organisation, and can be retrieved from the `/settings` endpoint.",
+                "tags": [
+                    "Requests"
+                ],
+                "requestBody": {
+                    "description": "Describes the datatypes that the user wishes to request from the organisation. These must match the `type` parameters that are available form the `/data` eindpoint. If the request body is omitted, the data request is created for all available data types.",
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/dataType"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/request"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "MaximumAmountOfRequestsReached"
+                                                    ]
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "The maximum amount of requests has been reached."
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "InvalidDataTypes"
+                                                    ]
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "The data types that were specified do not match the available datatypes for this organisation."
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                "examples": {
+                                    "MaximumAmountOfRequestsReached": {
+                                        "value": {
+                                            "error": "MaximumAmountOfRequestsReached",
+                                            "message": "The maximum amount of requests has been reached."
+                                        }
+                                    },
+                                    "InvalidDataTypes": {
+                                        "value": {
+                                            "error": "InvalidDataTypes",
+                                            "message": "The data types that were specified do not match the available datatypes for this organisation."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/requests/{requestId}": {
+            "get": {
+                "summary": "Get the status of a previously issued data request",
+                "description": "Retrieve a specific data request, which is currently in progress.",
+                "tags": [
+                    "Requests"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/requestId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/request"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/notfound"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Cancel an outstanding request",
+                "description": "The request with the supplied `requestId` is cancelled and deleted. Any information that has already been gathered from on part of the organisation must be deleted. The user must be able to submit a new data request immediately.",
+                "tags": [
+                    "Requests"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/requestId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "enum": [ "OK" ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/notfound"
+                    }
+                }
+            }
+        },
+        "/requests/{requestId}/download": {
+            "get": {
+                "summary": "Download a previously issued data request",
+                "description": "",
+                "externalDocs": {
+                    "description": "Find out more about how the archive should be structured",
+                    "url": "https://aeon.technology"
+                },
+                "tags": [
+                    "Requests"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/requestId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/zip": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json" : {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "enum": [ 
+                                                "Bad Request" 
+                                            ]
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [ 
+                                                "The request you are trying to retrieve has not been completed yet" 
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/notfound"
+                    }
+                }
+            }
+        },
+        "/requests/{requestId}/complete": {
+            "get": {
+                "summary": "Whether the specific request has been completed",
+                "tags": [
+                    "Requests"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/requestId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "number",
+                                    "enum": [0, 1],
+                                    "description": "Returns 0 if the request is still pending, returns 1 if the request is complete"
+                                },
+                                "examples": {
+                                    "RequestIncomplete": {
+                                        "value": 0
+                                    },
+                                    "RequestComplete": {
+                                        "value": 1
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/notfound"
+                    }
+                }
+            }
+        },
+        "/data": {
+            "get": {
+                "summary": "List the data processed by the organisation",
+                "security": [],
+                "tags": [
+                    "Data"
+                ],
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "description": "A ISO 639-1 language code identifier. Must match the `supportedLanguages` in the `/settings` endpoint. Defaults to `eng`",
+                            "default": "en"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "required": [
+                                        "type",
+                                        "schemaUrl"
+                                    ],
+                                    "properties": {
+                                        "type": {
+                                            "type": "array",
+                                            "description": "",
+                                            "items": {
+                                                "$ref": "#/components/schemas/dataType"
+                                            }
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "A human-readable description "
+                                        },
+                                        "schemaUrl": {
+                                            "type": "string",
+                                            "format": "url"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "enum": [
+                                                "LanguageNotSupported"
+                                            ]
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "enum": [
+                                                "The language you are requesting is not supported by this organisation"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/data/me": {
+            "get": {
+                "summary": "List the data that is processed by this organisation for the authenticated user",
+                "tags": [
+                    "Data"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/dataType"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/unauthorized"
+                    }
+                }
+            }
+        },
+        "/settings": {
+            "get": {
+                "summary": "List all the properties that are used in this API implementation",
+                "tags": [
+                    "Settings"
+                ],
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "forgotPasswordLink": {
+                                            "type": "string",
+                                            "format": "url",
+                                            "description": "A URL that points to the human-readable privacy policy that covers the processed data",
+                                            "example": "https://acme-corp.com/forgot-password"
+                                        },
+                                        "legalEntity": {
+                                            "type": "string",
+                                            "description": "The organisation that bears legal responsibility for all data processing",
+                                            "example": "ACME Corp Inc."
+                                        },
+                                        "maxNumberOfRequests": {
+                                            "type": "number",
+                                            "description": "The maximum amount of requests that can be made concurrently",
+                                            "example": 5
+                                        },
+                                        "organisationName": {
+                                            "type": "string",
+                                            "description": "The human-friendly name for the organisation processing the data",
+                                            "example": "ACME Corp"
+                                        },
+                                        "privacyPolicy": {
+                                            "type": "string",
+                                            "format": "url",
+                                            "description": "A URL that points to the human-readable privacy policy that covers the processed data",
+                                            "example": "https://acme-corp.com/privacy-policy"
+                                        },
+                                        "privacyContactEmail": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "description": "An email address to which any issues arising with or from the retrieved data can be addressed to",
+                                            "example": "privacy@acme-corp.com"
+                                        },
+                                        "supportedLanaguages": {
+                                            "type": "array",
+                                            "description": "An array of languages that are supported by this API. The language only applies to descriptions of data types that are described by the `/data` endpoint. All other returned content (such as data type identifiers) must be in English.",
+                                            "items": {
+                                                "type": "string",
+                                                "description": "A ISO 639-1 language code identifier",
+                                                "example": "en"
+                                            }
+                                        },
+                                        "termsOfService": {
+                                            "type": "string",
+                                            "format": "url",
+                                            "description": "A URL that points to the human-readable terms of service that covers the processed data",
+                                            "example": "https://acme-corp.com/privacy-policy"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
