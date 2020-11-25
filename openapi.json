@@ -21,7 +21,7 @@
         "securitySchemes": {
             "oAuth": {
                 "type": "oauth2",
-                "description": "This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)",
+                "description": "This API uses OAuth 2 with the implicit grant flow",
                 "flows": {
                     "authorizationCode": {
                         "authorizationUrl": "/oauth/authorized",
@@ -123,7 +123,7 @@
                     },
                     "completedAt": {
                         "type": "string",
-                        "format": "data",
+                        "format": "date-time",
                         "description": "An optional date-time detailing when the request was completed."
                     },
                     "dataRequested": {
@@ -137,7 +137,7 @@
             },
             "dataType": {
                 "type": "string",
-                "example": "CommonDenominator"
+                "example": "LikeAction"
             }
         }
     },
@@ -332,7 +332,9 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "string",
-                                    "enum": [ "OK" ]
+                                    "enum": [
+                                        "OK"
+                                    ]
                                 }
                             }
                         }
@@ -349,10 +351,10 @@
         "/requests/{requestId}/download": {
             "get": {
                 "summary": "Download a previously issued data request",
-                "description": "",
+                "description": "When a request is complete, an archive can be downloaded that contains all personal information of the authenticated user. This archive should be a `.ZIP` file that follows a particular structure. For more info, see the additional documentation linked below.",
                 "externalDocs": {
                     "description": "Find out more about how the archive should be structured",
-                    "url": "https://aeon.technology"
+                    "url": "/docs/requests/archive"
                 },
                 "tags": [
                     "Requests"
@@ -377,20 +379,20 @@
                     "400": {
                         "description": "Bad Request",
                         "content": {
-                            "application/json" : {
+                            "application/json": {
                                 "schema": {
                                     "type": "object",
                                     "properties": {
                                         "error": {
                                             "type": "string",
-                                            "enum": [ 
-                                                "Bad Request" 
+                                            "enum": [
+                                                "Bad Request"
                                             ]
                                         },
                                         "message": {
                                             "type": "string",
-                                            "enum": [ 
-                                                "The request you are trying to retrieve has not been completed yet" 
+                                            "enum": [
+                                                "The request you are trying to retrieve has not been completed yet"
                                             ]
                                         }
                                     }
@@ -410,6 +412,7 @@
         "/requests/{requestId}/complete": {
             "get": {
                 "summary": "Whether the specific request has been completed",
+                "description": "This is a convenience endpoint to quickly check if a particular request has been completed or not. If you wish to check multiple requests at once, use the regular `/reqeusts` endpoint that will list all outstanding data requests.",
                 "tags": [
                     "Requests"
                 ],
@@ -425,7 +428,10 @@
                             "text/plain": {
                                 "schema": {
                                     "type": "number",
-                                    "enum": [0, 1],
+                                    "enum": [
+                                        0,
+                                        1
+                                    ],
                                     "description": "Returns 0 if the request is still pending, returns 1 if the request is complete"
                                 },
                                 "examples": {
@@ -451,6 +457,7 @@
         "/data": {
             "get": {
                 "summary": "List the data processed by the organisation",
+                "description": "In order to be able to select for which data types a request must be made, the organisation must publicise which data it processes of its users. This endpoints returns a structured, machine-readable, human-friendly list that gives a complete overview of the data processing that the legal entity creating this API is responsible for.",
                 "security": [],
                 "tags": [
                     "Data"
@@ -459,39 +466,68 @@
                     {
                         "name": "lang",
                         "in": "query",
+                        "description": "A ISO 639-1 language code identifier. Must match the `supportedLanguages` in the `/settings` endpoint. Defaults to `en`",
                         "schema": {
                             "type": "string",
-                            "description": "A ISO 639-1 language code identifier. Must match the `supportedLanguages` in the `/settings` endpoint. Defaults to `eng`",
                             "default": "en"
                         }
                     }
                 ],
+                "externalDocs": {
+                    "description": "For more info on how to specify data types processed, check out the docs on data schemas",
+                    "url": "docs/data-types"
+                },
                 "responses": {
                     "200": {
                         "description": "OK",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "required": [
-                                        "type",
-                                        "schemaUrl"
-                                    ],
-                                    "properties": {
-                                        "type": {
-                                            "type": "array",
-                                            "description": "",
-                                            "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "type",
+                                            "schemaUrl",
+                                            "processingGround",
+                                            "isErasable",
+                                            "isRectifiable"
+                                        ],
+                                        "properties": {
+                                            "type": {
                                                 "$ref": "#/components/schemas/dataType"
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "description": "A human-readable description of the type of data that is processed",
+                                                "example": "The act of expressing a positive sentiment about the object. An agent likes an object (a proposition, topic or theme) with participants."
+                                            },
+                                            "schemaUrl": {
+                                                "type": "string",
+                                                "format": "url",
+                                                "description": "The schema.org URL for the data type. If the data does not match schema.org, organisations may create their own schemas.",
+                                                "example": "https://schema.org/LikeAction"
+                                            },
+                                            "processingGround": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "consent",
+                                                    "performanceOfContract",
+                                                    "legalObligation",
+                                                    "vitalInterest",
+                                                    "taskInPublicInterest",
+                                                    "legitimateInterest"
+                                                ],
+                                                "description": "The organisation must indicate on which ground the lawfulness of their processing is based. These lawful grounds are limited by Article 6 of the General Data Protection Regulation. The values that are considered valid in this property correspond to those in subparagraph 1 of Article 6:\na) `consent`: the subject has given consent for the processing of this data\nb) `performanceOfContract`: processing is necessary for performance of a legal contract\nc) `legalObligation`: processing is necessary for compliance with a legal obligation\nd) `vitalInterest`: processing is necessary to protect the vital interest of someone\ne) `taskInPublicInterest`: processing is necessary to for a task carried out in the public interest\nf) `legitimateInterest`: processing is necessary for the legitimate interest of the processor"
+                                            },
+                                            "isErasable": {
+                                                "type": "boolean",
+                                                "description": "Owners of data of this type may request the data to be deleted. The circumstances under which data must be deletable are covered by Article 17 of the General Data Proctection Regulation. In practice, consider that any data must be deletable, unless: \n* The data is covered by a legal obligation\n* The data is necessary for the performance of a task carried out in the public interest or in the exercise of official authority\n* The data is necessary for archiving purposes in the public interest, scientific research historical research or statistical purposes where erasure is likely to render impossible or seriously impair the achievement of that processing\n*  for the establishment, exercise or defence of legal claims \n\nAdditionally, specific data may be exempt from the right to erasure: \n* if the processing is necessary for public health purposes in the public interest (eg protecting against serious cross-border threats to health, or ensuring high standards of quality and safety of health care and of medicinal products or medical devices); orif the processing is necessary for the purposes of preventative or occupational medicine; for the working capacity of an employee; for medical diagnosis\n* for the provision of health or social care; or for the management of health or social care systems or services."
+                                            },
+                                            "isRectifiable": {
+                                                "type": "boolean",
+                                                "description": "Owners of data of this type may request it to be changed. The circumstances for the applicability of this right are set out in Article 16 of the General Data Protection Regulation. In general, this right applies to data that is inaccurate or incomplete. If none of these grounds apply, you may refuse honor rectification requests."
                                             }
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "description": "A human-readable description "
-                                        },
-                                        "schemaUrl": {
-                                            "type": "string",
-                                            "format": "url"
                                         }
                                     }
                                 }
@@ -553,7 +589,8 @@
         },
         "/settings": {
             "get": {
-                "summary": "List all the properties that are used in this API implementation",
+                "summary": "Detail the properties under which this organisation operates",
+                "description": "This endpoint details the prerequisites for Data Request API operation. Additionally, some of the parameters supplied in this call are designed to make it easier for citizens to understand their rights and possibilities of enforcing them. Organisations must implement all of the parameters.",
                 "tags": [
                     "Settings"
                 ],
