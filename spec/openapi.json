@@ -429,17 +429,17 @@
                                 "schema": {
                                     "type": "number",
                                     "enum": [
-                                        0,
-                                        1
+                                        "0",
+                                        "1"
                                     ],
                                     "description": "Returns 0 if the request is still pending, returns 1 if the request is complete"
                                 },
                                 "examples": {
                                     "RequestIncomplete": {
-                                        "value": 0
+                                        "value": "0"
                                     },
                                     "RequestComplete": {
-                                        "value": 1
+                                        "value": "1"
                                     }
                                 }
                             }
