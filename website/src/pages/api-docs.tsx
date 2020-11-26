@@ -7,9 +7,32 @@ const StyledRedoc = styled.div`
 
     .menu-content {
         input[type="text"] {
-            margin-top: 25px;
             font-weight: normal;
             font-size: inherit;
+            border: 0;
+            background-color: #eee;
+            border-radius: 4px;
+            padding: 10px 15px 10px 30px;
+            margin: 0;
+            width: 100%;
+        }
+
+        div[role="search"] {
+            margin: 25px 10px 0 10px;
+
+            svg.search-icon {
+                margin-top: 6px;
+                left: 20px;   
+
+                path {
+                    fill: #aaa;
+                }
+            }
+
+            i {
+                right: 16px;
+                margin-top: 6px;
+            }
         }
 
         label.-depth2 {
@@ -57,6 +80,13 @@ const StyledRedoc = styled.div`
                 margin: 0;
                 color: #666;
                 background-color: transparent;
+                font-weight: normal;
+                font-size: 1em;
+                padding: 10px 15px;
+
+                &:hover:not(.react-tabs__tab--selected) {
+                    background-color: #e6e6e6;
+                }
 
                 &.react-tabs__tab--selected {
                     background-color: #eee;
@@ -82,6 +112,39 @@ const StyledRedoc = styled.div`
                         display: none;
                     }
                 }
+            }
+        }
+
+        .security-details {
+            tr {
+                background-color: transparent;
+                border-top: 0;
+
+                &:first-child {
+                    border-bottom: 1px solid #eee;
+
+                }
+            }
+
+            td,th {
+                border: 0;
+                padding: 13px 13px 13px 0;
+            }
+        }
+
+        h5 {
+            text-transform: capitalize;
+        }
+
+        .redoc-json {
+            .property.token.string {
+                color: black;
+            }
+            .token.boolean {
+                color: #0000FF;
+            }
+            .token.string {
+                color: #4000a4;
             }
         }
 
@@ -115,7 +178,11 @@ export default function ApiDocs() {
                             },
                             text: {
                                 primary: "#000000"
-                            },    
+                            },  
+                            border: {
+                                light: "#f6f6f6",
+                                dark: "#eee",
+                            },
                             http: {
                                 get: '#0000FF',
                                 post: '#4000a4',
