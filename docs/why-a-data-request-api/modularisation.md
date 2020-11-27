@@ -2,7 +2,7 @@
 
 If an API is standardised and accessible for third parties, the front-end and back-end of any data rights experience is no longer tightly coupled. 
 
-![](../.gitbook/assets/integrated-modularised-architecture-4x%20%281%29.png)
+![](../.gitbook/assets/integrated-modularised-architecture-4x.png)
 
 ### A strict back-end
 
