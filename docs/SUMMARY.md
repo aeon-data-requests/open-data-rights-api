@@ -19,7 +19,7 @@
   * [API Extensions](future-considerations/api-extensions.md)
   * [Certification](future-considerations/certification.md)
   * [Security](future-considerations/security.md)
+  * [Reference Implementations](future-considerations/reference-implementations.md)
   * [Data Rights Registry](future-considerations/data-rights-registry.md)
   * [Iconography](future-considerations/iconography.md)
-* [Conclusion](conclusion.md)
 

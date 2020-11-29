@@ -1,2 +1,6 @@
 # A great user experience
 
+While many organisations have processes for data rights \(some electronic even\), they differ between organisations. Particularly smaller organisations suffer from a lack of attention to make this process feasible and accessible for citizens. We consider this a pity, because dealing with these processes in a thorough manner showcases the attention that should be expected from an organisation processing personal information. A great user experience reinforces the idea that organisations are accountable and diligent with the data they are provided. Doing the process right, increases consumer trust, which is beneficial for revenue \(e.g. [Tsai et al., 2011](https://doi.org/10.1287/isre.1090.0260); [Tang et al., 2008](https://doi.org/10.2753/MIS0742-1222240406); [Udo, 2001](https://doi.org/10.1108/EUM0000000005808)\).
+
+We strongly encourage the development of a standard range of tools that can act as a front-end to the Open Data Rights API. Work is already being done here in the form of [Aeon](https://aeon.technology/), a desktop application that automates and archives data requests. Companies can either adopt such tools, or build their own. Yet, the choice for a suitable front-end lies with the user. This promotes developing strong user experiences in the realm of data rights.
+
