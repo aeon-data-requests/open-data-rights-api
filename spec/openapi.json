@@ -488,7 +488,7 @@
                                         "type": "object",
                                         "required": [
                                             "type",
-                                            "schemaUrl",
+                                            "context",
                                             "processingGround",
                                             "isErasable",
                                             "isRectifiable"
@@ -502,11 +502,11 @@
                                                 "description": "A human-readable description of the type of data that is processed",
                                                 "example": "The act of expressing a positive sentiment about the object. An agent likes an object (a proposition, topic or theme) with participants."
                                             },
-                                            "schemaUrl": {
+                                            "context": {
                                                 "type": "string",
                                                 "format": "url",
-                                                "description": "The schema.org URL for the data type. If the data does not match schema.org, organisations may create their own schemas.",
-                                                "example": "https://schema.org/LikeAction"
+                                                "description": "The schema.org URL for the data type. If the data does not match schema.org, organisations may create their own schemas. This property matches the `@context` property that is described by JSON-LD.",
+                                                "example": "http://schema.org/LikeAction"
                                             },
                                             "processingGround": {
                                                 "type": "string",
