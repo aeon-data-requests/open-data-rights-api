@@ -619,6 +619,17 @@
                                             "description": "The maximum amount of requests that can be made concurrently",
                                             "example": 5
                                         },
+                                        "oAuthClientId": {
+                                            "type": "string",
+                                            "description": "The client identifier that can be used to authenticate a user against the OAuth server. This identifier may be rotated periodically, but must be made public using this API.",
+                                            "example": "6779ef20e75817b79602"
+                                        },
+                                        "oAuthUrl": {
+                                            "type": "string",
+                                            "format": "url",
+                                            "description": "Either describes a RFC8414 compliant OAuth metadata endpoint (also known as OpenID Discovery), or the ",
+                                            "example": "https://oauth.acmecorp.com/"
+                                        },
                                         "organisationName": {
                                             "type": "string",
                                             "description": "The human-friendly name for the organisation processing the data",
