@@ -1,6 +1,6 @@
 # Goals
 
-The Open Data Request API is aimed at improving the status quo of exercising data rights. In this proposal, we clarify the goals of the initiative. Further development, cooperation and implementation efforts are made according to these goals. 
+The Open Data Rights API is aimed at improving the status quo of exercising data rights. In this proposal, we clarify the goals of the initiative. Further development, cooperation and implementation efforts are made according to these goals. 
 
 ### Increasing the adoption of systems for data rights by organisations worldwide
 

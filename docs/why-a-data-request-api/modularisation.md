@@ -6,7 +6,7 @@ If an API is standardised and accessible for third parties, the front-end and ba
 
 ### A compliant back-end
 
-Given that the back-end is built on well-known standards, an Open Data Request API provides crucial assurances to a user-interfacing application: we can identify you, we can identify what data we process, which of that processing applies to you, and what that data looks like. These standardised assurances make building on top of this API in an efficient way much easier.
+Given that the back-end is built on well-known standards, an Open Data Rights API provides crucial assurances to a user-interfacing application: we can identify you, we can identify what data we process, which of that processing applies to you, and what that data looks like. These standardised assurances make building on top of this API in an efficient way much easier.
 
 ### A modular front-end
 
