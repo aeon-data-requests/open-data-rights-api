@@ -10,7 +10,7 @@ Given that the back-end is built on well-known standards, an Open Data Rights AP
 
 ### A modular front-end
 
-The user-facing aspects of a data rights experience have the strongest cards to delight or depress a citizen. Inventing this wheel again and again not only leads to fragmentation, but frustration on part of the end-user. With assurances about what an API provides, competition between various solutions that consume the API is a lot more leveled.
+The user-facing aspects of a data rights experience have the strongest cards to delight or depress a citizen. Inventing this wheel again and again not only leads to fragmentation, but frustration on part of the end-user. With assurances about what an API provides, competition between various solutions that consume the API is a lot more levelled.
 
 Moreover this competition means reduced compliance costs for organisations. While they may offer a front-end for exercising data rights, these front-ends are interchangeable and commodified. Organisations no longer need to lock in to a particular compliance vendor, if the product is missing their needs. If the front-end is based on open-source tools, the organisation can choose fork and adjust it to its needs.
 
