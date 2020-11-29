@@ -1,8 +1,14 @@
 # Goals
 
+The Open Data Request API is aimed at improving the status quo of exercising data rights. In this proposal, we clarify the goals of the initiative. Further development, cooperation and implementation efforts are made according to these goals. 
+
 ### Increasing the adoption of systems for data rights by organisations worldwide
 
 Organisations must provide a form of processing data rights. We strongly believe that electronic means for doing so constitute the best way of doing so. By providing common patterns and best practices for creating these electronic means, we aim to increase adoption and widespread use of data rights systems, not only in Europe or companies covered by the GDPR, but universally.
+
+### Great ease-of-adoption for organisations
+
+Adoption by organisations should be as easy as possible. The specification must support the 80% use case, while facilitating th 20% use case. Documentation should be high-quality and plentiful, not only covering the specification, but implementation from different perspectives. Moreover, the documentation should provide guides for going through the process of supporting data rights as a whole, not only covering the implementation of a data request API.
 
 ### Making the exercising of data rights more accessible
 
