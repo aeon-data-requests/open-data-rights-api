@@ -1,2 +1,0 @@
-# Describing Data Types
-

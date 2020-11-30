@@ -1,2 +1,0 @@
-# A commitment to privacy
-
