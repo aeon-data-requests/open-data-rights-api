@@ -1,6 +1,6 @@
 # Introduction
 
-![](.gitbook/assets/open-data-request-api-logo-2x.png)
+![](.gitbook/assets/open-data-rights-whitespace-2x.png)
 
 This interactive whitepaper aims to establish a standardised method of requesting data from data processors and controllers in the European Union. 
 
