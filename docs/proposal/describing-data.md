@@ -6,7 +6,7 @@ These semantics are broken up between how data processing is described, as well 
 
 ### Describing data processing
 
-Data is processing is described as part of the `/data` and `/data/me` endpoints. The former endpoint describes the data processing practices for the organisation at large. Both endpoints are described in detail in the [API documentation](https://bump.sh/doc/open-dsar-api#endpoint-data).
+Data is processing is described as part of the `/data` and `/data/me` endpoints. The former endpoint describes the data processing practices for the organisation at large. Both endpoints are described in detail in the [API documentation](https://bump.sh/doc/open-data-rights-api#endpoint-data).
 
 For the organisational practices, all possibly processed data types must be listed. For each data type, organisations must indicate the following:
 

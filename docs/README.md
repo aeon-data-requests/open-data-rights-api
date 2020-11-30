@@ -4,7 +4,7 @@
 
 This interactive whitepaper aims to establish a standardised method of requesting data from data processors and controllers in the European Union. 
 
-The whitepaper is substantiated by an API proposal definition, following the OpenAPI 3 specification. Documentation for the API specification is available [here](https://bump.sh/doc/open-dsar-api). Additionally, the whitepaper describes a background, and rationale for a data rights API, a substantive proposal and considerations for future use.
+The whitepaper is substantiated by an API proposal definition, following the OpenAPI 3 specification. Documentation for the API specification is available [here](https://bump.sh/doc/open-data-rights-api). Additionally, the whitepaper describes a background, and rationale for a data rights API, a substantive proposal and considerations for future use.
 
 The Open Data Rights API is a work in progress. Both the [API specification](https://github.com/aeon-data-requests/open-data-rights-api/blob/main/spec/openapi.json) and [this document](https://github.com/aeon-data-requests/open-data-rights-api/tree/main/docs) are tracked in a [GitHub repository](https://github.com/aeon-data-requests/open-data-rights-api). Comments, feedback and discussions are welcomed in the [GitHub issues section](https://github.com/aeon-data-requests/open-data-rights-api/issues) of this repository. Pull requests are welcomed as well. Any further questions or comments can be directed to [Lei Nelissen](https://leinelissen.com/).
 
