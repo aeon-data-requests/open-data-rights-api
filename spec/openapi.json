@@ -573,9 +573,19 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/dataType"
+                                    "type": "object",
+                                    "properties": {
+                                        "account": {
+                                            "type": "string",
+                                            "description": "A organisation-unique identifier for the authenticated user. May be a UUID, email address, or otherwise",
+                                            "example": "user@acme-corp.com"
+                                        },
+                                        "types": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/dataType"
+                                            }
+                                        }
                                     }
                                 }
                             }
