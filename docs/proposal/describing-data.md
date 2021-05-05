@@ -16,13 +16,10 @@ For the organisational practices, all possibly processed data types must be list
 * Whether the data may be rectified by the user
 * A human-readable description for the data type.
 
-Lastly, the `/data/me` endpoint constitutes an array of all context-based data types that are being \(possibly\) being processed in connection with the authenticated user.
+Lastly, the `/data/me` endpoint constitutes an array of all context-based data types that are being \(possibly\) processed in connection with the authenticated user.
 
 ### Describing data in archives
 
-When data is eventually exported using the API,  the data must be made available in a particular format. In the case of the Open Data Rights API, this data is formatted using `JSON-LD` and `schema.org` definitions. Organisations may create many files containing data, as long as data is always formatted using `JSON-LD`. Additional file types, such as images, videos and other non-structured media, must be included as well. Any included non-JSON-LD files must be referenced from at least a single JSON-LD file. The archive must be ZIP file. 
+When data is eventually exported using the API,  the data must be made available in a particular format. In the case of the Open Data Rights API, this data is formatted using `JSON-LD` and `schema.org` definitions. Organisations may create many files containing data, as long as data is always formatted using `JSON-LD`. Additional file types, such as images, videos and other non-structured media, must be included as well. Any included non-JSON-LD files must be referenced from at least a single JSON-LD file. The archive must be a ZIP file. 
 
-The archive may follow a self-defined internal structure, except for a a folder at the root level with the `open-data-rights-api` name. This folder contains another folder called `schemas`, in which each JSON-LD `@context` property that is used is archived as well. In this folder, each schema is contained in a seperate JSON file, of which the content exhaustively describes the schema. Also, two files called `data.json` and `data-me.json` describe the output for the respective endpoints at the time of archive creation.
-
-### 
-
+The archive may follow a self-defined internal structure, except for a folder at the root level with the `open-data-rights-api` name. This folder contains another folder called `schemas`, in which each JSON-LD `@context` property that is used is archived. In this folder, each schema is contained in a seperate JSON file, of which the content exhaustively describes the schema. Also, two files called `data.json` and `data-me.json` describe the output for the respective endpoints at the time of archive creation.
